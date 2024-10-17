@@ -10,7 +10,7 @@ const Favourites = () => {
   const { data, isError, isLoading } = useProperties();
   const [filter, setFilter] = useState("");
   const {
-    userDetails: { favourites },
+    userDetails: { favourites } = {} // Use default empty object to avoid destructuring error
   } = useContext(UserDetailContext);
 
   if (isError) {
@@ -34,6 +34,7 @@ const Favourites = () => {
       </div>
     );
   }
+
   return (
     <div className="wrapper">
       <div className="flexColCenter paddings innerWidth properties-container">
@@ -41,11 +42,9 @@ const Favourites = () => {
 
         <div className="paddings flexCenter properties">
           {
-            // data.map((card, i)=> (<PropertyCard card={card} key={i}/>))
-
+            // Only filter if `favourites` is defined
             data
-              .filter((property) => favourites.includes(property.id))
-
+              .filter((property) => favourites?.includes(property.id)) 
               .filter(
                 (property) =>
                   property.title.toLowerCase().includes(filter.toLowerCase()) ||
